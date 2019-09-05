@@ -203,7 +203,6 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
       final double childStartOffset = reverse ? headerExtent : headerPaintExtent;
 
-      print(axisDirection);
       switch (axisDirection) {
         case AxisDirection.up:
           childParentData.paintOffset = Offset.zero;
