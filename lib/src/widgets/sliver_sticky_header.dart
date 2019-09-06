@@ -48,7 +48,7 @@ class SliverStickyHeader extends RenderObjectWidget {
     this.header,
     this.sliver,
     this.overlapsContent: false,
-    this.reverse,
+    this.reverse: false,
   })  : assert(overlapsContent != null),
         assert(reverse != null),
         super(key: key);
