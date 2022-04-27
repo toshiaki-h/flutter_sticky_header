@@ -14,6 +14,8 @@ A Flutter implementation of sticky headers with a sliver as a child.
 * Notifies when the header scrolls outside the viewport.
 * Can scroll in any direction.
 * Supports overlapping (AppBars for example).
+* Supports not sticky headers (with `sticky: false` parameter).
+* Supports a controller which notifies the scroll offset of the current sticky header.
 
 ## Getting started
 
@@ -22,7 +24,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ```yaml
 dependencies:
   ...
-  flutter_sticky_header: "^0.4.0"
+  flutter_sticky_header:
 ```
 
 In your library add the following import:
@@ -38,24 +40,24 @@ For help getting started with Flutter, view the online [documentation](https://f
 You can place one or multiple `SliverStickyHeader`s inside a `CustomScrollView`.
 
 ```dart
-new SliverStickyHeader(
-  header: new Container(
+SliverStickyHeader(
+  header: Container(
     height: 60.0,
     color: Colors.lightBlue,
     padding: EdgeInsets.symmetric(horizontal: 16.0),
     alignment: Alignment.centerLeft,
-    child: new Text(
+    child: Text(
       'Header #0',
       style: const TextStyle(color: Colors.white),
     ),
   ),
-  sliver: new SliverList(
-    delegate: new SliverChildBuilderDelegate(
-      (context, i) => new ListTile(
-            leading: new CircleAvatar(
-              child: new Text('0'),
+  sliver: SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (context, i) => ListTile(
+            leading: CircleAvatar(
+              child: Text('0'),
             ),
-            title: new Text('List tile #$i'),
+            title: Text('List tile #$i'),
           ),
       childCount: 4,
     ),
@@ -63,32 +65,32 @@ new SliverStickyHeader(
 );
 ```
 
-## SliverStickyHeaderBuilder
+## SliverStickyHeader.builder
 
-If you want to change the header layout during its scroll, you can use the `SliverStickyHeaderBuilder`.
+If you want to change the header layout during its scroll, you can use the `SliverStickyHeader.builder` constructor.
 
 The example belows changes the opacity of the header as it scrolls off the viewport.
 
 ```dart
-new SliverStickyHeaderBuilder(
-  builder: (context, state) => new Container(
+SliverStickyHeader.builder(
+  builder: (context, state) => Container(
         height: 60.0,
         color: (state.isPinned ? Colors.pink : Colors.lightBlue)
             .withOpacity(1.0 - state.scrollPercentage),
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         alignment: Alignment.centerLeft,
-        child: new Text(
+        child: Text(
           'Header #1',
           style: const TextStyle(color: Colors.white),
         ),
       ),
-  sliver: new SliverList(
-    delegate: new SliverChildBuilderDelegate(
-      (context, i) => new ListTile(
-            leading: new CircleAvatar(
-              child: new Text('0'),
+  sliver: SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (context, i) => ListTile(
+            leading: CircleAvatar(
+              child: Text('0'),
             ),
-            title: new Text('List tile #$i'),
+            title: Text('List tile #$i'),
           ),
       childCount: 4,
     ),
@@ -97,6 +99,10 @@ new SliverStickyHeaderBuilder(
 ```
 
 You can find more examples in the [Example](https://github.com/letsar/flutter_sticky_header/tree/master/example) project.
+
+## Sponsoring
+
+I'm working on my packages on my free-time, but I don't have as much time as I would. If this package or any other package I created is helping you, please consider to sponsor me. By doing so, I will prioritize your issues or your pull-requests before the others. 
 
 ## Changelog
 

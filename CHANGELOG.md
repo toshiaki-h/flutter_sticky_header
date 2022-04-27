@@ -1,3 +1,45 @@
+## 0.6.1
+### Fixed
+* Error due to null-safety migration.
+
+## 0.6.0
+### Changed
+* Migrated to sound null-safety.
+* Increase the minimum version of Flutter.
+* Increase the minimum version of Dart SDK.
+
+## 0.5.0
+### Changed
+* The minimum version of Flutter.
+
+## 0.4.6
+### Added
+* A new SliverStickyHeader.builder constructor instead of the deprecated SliverStickyHeaderBuilder.
+* A dependency to value_layout_builder in order to manage the SliverStickyHeader.builder.
+
+### Removed
+* Custom code to make SliverStickyHeader.builder work.
+
+## 0.4.5
+### Fixed
+* Null references issues in debug mode.
+
+## 0.4.4
+### Fixed
+* Static analysis issues.
+
+## 0.4.3
+### Fixed
+* Static analysis issues.
+
+## 0.4.2
+### Added
+* A StickyHeaderController to get the scroll offset of the current sticky header.
+
+## 0.4.1
+### Added
+* A sticky parameter to specify whether the header is sticky or not.
+
 ## 0.4.0
 
 * Updated SDK constraint to support new error message formats. 
