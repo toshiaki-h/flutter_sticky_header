@@ -12,15 +12,6 @@ import 'package:value_layout_builder/value_layout_builder.dart';
 /// the [child] scrolls off the viewport.
 class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
-    RenderObject header,
-    RenderSliver child,
-    overlapsContent: false,
-    reverse: false,
-  })  : assert(overlapsContent != null),
-        assert(reverse != null),
-        _overlapsContent = overlapsContent,
-        _reverse = reverse {
-    this.header = header;
     RenderObject? header,
     RenderSliver? child,
     bool overlapsContent: false,
@@ -163,8 +154,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
     }
 
     // One of them is not null.
-    AxisDirection axisDirection =
-        applyGrowthDirectionToAxisDirection(constraints.axisDirection, constraints.growthDirection);
+    AxisDirection axisDirection = applyGrowthDirectionToAxisDirection(
+        constraints.axisDirection, constraints.growthDirection);
 
     if (reverse) axisDirection = flipAxisDirection(axisDirection);
 
@@ -193,16 +184,18 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
           paintExtent: headerPaintExtent,
           cacheExtent: headerCacheExtent,
           hitTestExtent: headerPaintExtent,
-          hasVisualOverflow:
-              headerExtent > constraints.remainingPaintExtent || constraints.scrollOffset > 0.0);
+          hasVisualOverflow: headerExtent > constraints.remainingPaintExtent ||
+              constraints.scrollOffset > 0.0);
     } else {
       child!.layout(
         constraints.copyWith(
           scrollOffset: math.max(0.0, constraints.scrollOffset - headerExtent),
           cacheOrigin: math.min(0.0, constraints.cacheOrigin + headerExtent),
           overlap: 0.0,
-          remainingPaintExtent: constraints.remainingPaintExtent - headerPaintExtent,
-          remainingCacheExtent: constraints.remainingCacheExtent - headerCacheExtent,
+          remainingPaintExtent:
+              constraints.remainingPaintExtent - headerPaintExtent,
+          remainingCacheExtent:
+              constraints.remainingCacheExtent - headerCacheExtent,
         ),
         parentUsesSize: true,
       );
@@ -224,31 +217,37 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
       geometry = SliverGeometry(
         scrollExtent: headerExtent + childLayoutGeometry.scrollExtent,
         paintExtent: paintExtent,
-        layoutExtent: math.min(headerPaintExtent + childLayoutGeometry.layoutExtent, paintExtent),
+        layoutExtent: math.min(
+            headerPaintExtent + childLayoutGeometry.layoutExtent, paintExtent),
         cacheExtent: math.min(
-            headerCacheExtent + childLayoutGeometry.cacheExtent, constraints.remainingCacheExtent),
+            headerCacheExtent + childLayoutGeometry.cacheExtent,
+            constraints.remainingCacheExtent),
         maxPaintExtent: headerExtent + childLayoutGeometry.maxPaintExtent,
-        hitTestExtent: math.max(headerPaintExtent + childLayoutGeometry.paintExtent,
+        hitTestExtent: math.max(
+            headerPaintExtent + childLayoutGeometry.paintExtent,
             headerPaintExtent + childLayoutGeometry.hitTestExtent),
         hasVisualOverflow: childLayoutGeometry.hasVisualOverflow,
       );
 
-
       final SliverPhysicalParentData? childParentData =
           child!.parentData as SliverPhysicalParentData?;
-      final double childStartOffset = reverse ? headerExtent : headerPaintExtent;
+      final double childStartOffset =
+          reverse ? headerExtent : headerPaintExtent;
       switch (axisDirection) {
         case AxisDirection.up:
           childParentData!.paintOffset = Offset.zero;
           break;
         case AxisDirection.right:
           childParentData!.paintOffset = Offset(
-              calculatePaintOffset(constraints, from: 0.0, to: childStartOffset),
+              calculatePaintOffset(constraints,
+                  from: 0.0, to: childStartOffset),
               0.0);
           break;
         case AxisDirection.down:
-          childParentData!.paintOffset = Offset(0.0,
-              calculatePaintOffset(constraints, from: 0.0, to: childStartOffset1));
+          childParentData!.paintOffset = Offset(
+              0.0,
+              calculatePaintOffset(constraints,
+                  from: 0.0, to: childStartOffset));
           break;
         case AxisDirection.left:
           childParentData!.paintOffset = Offset.zero;

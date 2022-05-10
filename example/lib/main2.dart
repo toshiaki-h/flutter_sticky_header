@@ -33,7 +33,7 @@ class MainScreen extends StatelessWidget {
   }
 
   List<Widget> _buildSlivers(BuildContext context) {
-    List<Widget> slivers = new List<Widget>();
+    List<Widget> slivers = <Widget>[];
 
     slivers.addAll(List.generate(9, (index) {
       return SliverStickyHeaderBuilder(
@@ -98,9 +98,9 @@ class MainScreen extends StatelessWidget {
 
 class SimpleScaffold extends StatelessWidget {
   const SimpleScaffold({
-    Key key,
-    this.title,
-    this.child,
+    Key? key,
+    required this.title,
+    required this.child,
   }) : super(key: key);
 
   final String title;
