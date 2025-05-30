@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -14,9 +13,9 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   RenderSliverStickyHeader({
     RenderObject? header,
     RenderSliver? child,
-    bool overlapsContent: false,
-    bool sticky: true,
-    bool reverse: false,
+    bool overlapsContent = false,
+    bool sticky = true,
+    bool reverse = false,
     StickyHeaderController? controller,
   })  : _overlapsContent = overlapsContent,
         _sticky = sticky,
@@ -191,7 +190,8 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
         constraints.copyWith(
           scrollOffset: math.max(0.0, constraints.scrollOffset - headerExtent),
           cacheOrigin: math.min(0.0, constraints.cacheOrigin + headerExtent),
-          overlap: 0.0,
+          overlap: math.min(headerExtent, constraints.scrollOffset) +
+              (sticky ? constraints.overlap : 0),
           remainingPaintExtent:
               constraints.remainingPaintExtent - headerPaintExtent,
           remainingCacheExtent:
@@ -216,6 +216,7 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
 
       geometry = SliverGeometry(
         scrollExtent: headerExtent + childLayoutGeometry.scrollExtent,
+        maxScrollObstructionExtent: sticky ? headerPaintExtent : 0,
         paintExtent: paintExtent,
         layoutExtent: math.min(
             headerPaintExtent + childLayoutGeometry.layoutExtent, paintExtent),
@@ -321,14 +322,26 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   bool hitTestChildren(SliverHitTestResult result,
       {required double mainAxisPosition, required double crossAxisPosition}) {
     assert(geometry!.hitTestExtent > 0.0);
+    final double childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
+    final double headerPosition = sticky
+        ? math.min(
+            constraints.overlap,
+            childScrollExtent -
+                constraints.scrollOffset -
+                (overlapsContent ? _headerExtent! : 0.0))
+        : -constraints.scrollOffset;
+
     if (header != null &&
-        mainAxisPosition - constraints.overlap <= _headerExtent!) {
-      return hitTestBoxChild(
-            BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
-            header!,
-            mainAxisPosition: mainAxisPosition - constraints.overlap,
-            crossAxisPosition: crossAxisPosition,
-          ) ||
+        (mainAxisPosition - headerPosition) <= _headerExtent!) {
+      final didHitHeader = hitTestBoxChild(
+        BoxHitTestResult.wrap(SliverHitTestResult.wrap(result)),
+        header!,
+        mainAxisPosition:
+            mainAxisPosition - childMainAxisPosition(header) - headerPosition,
+        crossAxisPosition: crossAxisPosition,
+      );
+
+      return didHitHeader ||
           (_overlapsContent &&
               child != null &&
               child!.geometry!.hitTestExtent > 0.0 &&

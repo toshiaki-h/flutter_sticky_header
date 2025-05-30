@@ -1,3 +1,4 @@
+import 'package:example/examples/nested.dart';
 import 'package:flutter/material.dart';
 
 import 'examples/animated_header.dart';
@@ -8,7 +9,10 @@ import 'examples/not_sticky.dart';
 import 'examples/reverse.dart';
 import 'examples/side_header.dart';
 
-void main() => runApp(const App());
+void main() {
+  // debugPaintPointersEnabled = true;
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({
@@ -64,6 +68,10 @@ class _Home extends StatelessWidget {
           _Item(
             text: 'Mixing other slivers',
             builder: (_) => const MixSliversExample(),
+          ),
+          _Item(
+            text: 'Nested sticky headers',
+            builder: (_) => const NestedExample(),
           ),
         ],
       ),
