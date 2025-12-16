@@ -41,7 +41,6 @@ class RenderSliverStickyHeader extends RenderSliver with RenderSliverHelpers {
   bool get reverse => _reverse;
   bool _reverse;
   set reverse(bool value) {
-    assert(value != null);
     if (_reverse == value) return;
     _reverse = value;
     markNeedsLayout();

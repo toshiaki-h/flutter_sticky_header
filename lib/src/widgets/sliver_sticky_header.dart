@@ -254,7 +254,7 @@ class SliverStickyHeaderBuilder extends StatelessWidget {
     this.sliver,
     this.overlapsContent = false,
     this.sticky = true,
-    this.reverse: false,
+    this.reverse = false,
     this.controller,
   }) : super(key: key);
 
